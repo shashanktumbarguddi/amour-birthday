@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FBF4EA">
+  <title>For Likitha ♡</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%82%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="assets/fonts/homemade-apple.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Hand-drawn doodles in the corners (purely decorative) -->
+  <div class="doodles" aria-hidden="true">
+    <svg class="doodle doodle--tl" viewBox="0 0 120 120">
+      <path d="M30 52c-9-17 12-28 22-12 9-17 33-6 22 13-6 11-22 22-22 22S36 64 30 52z" />
+      <path d="M88 22l3 8 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1z" />
+      <path d="M14 98c10-4 18 2 26-3" />
+    </svg>
+    <svg class="doodle doodle--br" viewBox="0 0 140 140">
+      <circle cx="70" cy="62" r="8" />
+      <path
+        d="M70 54c-4-16 12-20 10-4M78 60c14-8 22 6 6 8M76 70c10 12-4 22-8 6M64 70c-12 10-20-4-4-8M62 60c-14-8-4-22 6-6" />
+      <path d="M70 72c2 22-6 40-4 58M68 100c-10-8-20-6-24 0 8 4 18 4 24 0" />
+      <path d="M118 24l2 6 6 1-5 4 2 6-5-3-5 3 2-6-5-4 6-1z" />
+    </svg>
+    <svg class="doodle doodle--tr" viewBox="0 0 80 80">
+      <path d="M40 8l4 12 12 2-9 8 3 12-10-6-10 6 3-12-9-8 12-2z" />
+      <path d="M12 60l2 5 5 1-4 3 1 5-4-3-4 3 1-5-4-3 5-1z" />
+    </svg>
+  </div>
+
+  <main>
+
+    <!-- ============ Scene 1: Opening ============ -->
+    <section id="scene-intro" class="scene is-active" aria-labelledby="intro-title">
+      <h1 id="intro-title" class="hand intro-title" tabindex="-1" data-focus>Oyee, Likitha… </h1>
+      <p class="lede intro-line">I made a little something for you.</p>
+
+      <div class="envelope" id="envelope" aria-hidden="true">
+        <div class="env-back"></div>
+        <div class="env-letter">
+          <svg viewBox="0 0 100 90">
+            <path
+              d="M50 82S8 56 8 30C8 14 20 6 31 6c9 0 15 5 19 12 4-7 10-12 19-12 11 0 23 8 23 24 0 26-42 52-42 52z" />
+          </svg>
+        </div>
+        <div class="env-front"></div>
+        <div class="env-flap"></div>
+        <div class="env-seal">♡</div>
+      </div>
+
+      <button id="openBtn" class="btn intro-btn" type="button">Open your surprise ✨</button>
+    </section>
+
+    <!-- ============ Scene 2: Photo gallery ============ -->
+    <section id="scene-gallery" class="scene" hidden aria-labelledby="gallery-title">
+      <h2 id="gallery-title" class="hand scene-title" tabindex="-1" data-focus>Look at you ♡</h2>
+      <p class="hint">Tap a photo to see it bigger</p>
+
+      <div id="gallery" class="gallery"></div>
+      <p id="galleryEmpty" class="setup-note" hidden>
+        No photos found yet. Put them in <code>assets/photos/</code> named
+        <code>photo-01.jpg</code> to <code>photo-10.jpg</code>. This note disappears once they're in place.
+      </p>
+
+      <button id="toGameBtn" class="btn" type="button">Next surprise ✨</button>
+    </section>
+
+    <!-- ============ Scene 3: Catch the falling stars ============ -->
+    <section id="scene-game" class="scene" hidden aria-labelledby="game-title">
+      <h2 id="game-title" class="hand scene-title" tabindex="-1" data-focus>Ready for a tiny challenge, Likitha? ✨</h2>
+      <p class="lede">Catch <span data-target>10</span> stars before the timer runs out!</p>
+
+      <div class="hud" aria-hidden="true">
+        <div class="hud-item"><span class="hud-star">★</span> <span id="scoreOut">0</span><span class="hud-of"> / <span
+              data-target>10</span></span></div>
+        <div class="hud-item hud-time"><span id="timeOut">15</span>s</div>
+      </div>
+
+      <div class="game-wrap" id="gameWrap">
+        <canvas id="gameCanvas" class="game-canvas" tabindex="0"
+          aria-label="Game area. Use the left and right arrow keys, or drag, to move the basket."></canvas>
+
+        <div class="game-overlay" id="gameStart">
+          <button id="playBtn" class="btn" type="button">Let's play!</button>
+          <p class="overlay-hint">Drag the basket, or use the ← → keys.<br>Pink hearts are worth 2 ♡</p>
+        </div>
+
+        <div class="game-overlay" id="gameWin" hidden role="status">
+          <p class="overlay-msg hand">You caught enough stars! A little birthday magic awaits… ♡</p>
+          <button id="revealBtn" class="btn" type="button">Reveal my surprise</button>
+        </div>
+
+        <div class="game-overlay" id="gameLose" hidden role="status">
+          <p class="overlay-msg hand">Almost! Let's try once more ♡</p>
+          <button id="retryBtn" class="btn" type="button">Try again</button>
+          <button id="skipBtn" class="btn btn-ghost" type="button">Skip to my surprise</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Scene 4: Make a wish ============ -->
+    <section id="scene-cake" class="scene" hidden aria-labelledby="cake-title">
+      <h2 id="cake-title" class="hand scene-title" tabindex="-1" data-focus>Make a wish, Likitha… ♡</h2>
+      <p class="lede">Close your eyes and make a wish.</p>
+
+      <div class="cake-stage" id="cakeStage" aria-hidden="true">
+        <svg class="cake" viewBox="0 0 300 280">
+          <defs>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#FFE7A8" stop-opacity=".85" />
+              <stop offset="1" stop-color="#FFE7A8" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <ellipse class="cake-glow" cx="150" cy="74" rx="120" ry="70" fill="url(#glow)" />
+
+          <!-- plate -->
+          <ellipse cx="150" cy="252" rx="132" ry="16" fill="#E9DCCB" />
+          <ellipse cx="150" cy="248" rx="124" ry="12" fill="#FFFDF8" stroke="#3D3A3E" stroke-opacity=".25" />
+
+          <!-- bottom tier -->
+          <rect x="44" y="168" width="212" height="80" rx="10" fill="#F6E7D4" />
+          <path
+            d="M44 178c0-6 4-10 10-10h192c6 0 10 4 10 10v8c-8 0-8 14-16 14s-8-10-16-10-8 18-17 18-8-14-16-14-8 10-16 10-8-16-17-16-8 12-16 12-8-8-16-8-8 16-17 16-8-12-16-12-8 8-16 8-8-12-16-12v-8z"
+            fill="#F2C6CC" />
+          <g fill="#C77D8B">
+            <circle cx="78" cy="226" r="2.6" />
+            <circle cx="118" cy="234" r="2.6" />
+            <circle cx="160" cy="224" r="2.6" />
+            <circle cx="200" cy="236" r="2.6" />
+            <circle cx="232" cy="222" r="2.6" />
+          </g>
+          <g fill="#E3B04B">
+            <circle cx="98" cy="214" r="2" />
+            <circle cx="140" cy="240" r="2" />
+            <circle cx="182" cy="212" r="2" />
+            <circle cx="222" cy="240" r="2" />
+          </g>
+
+          <!-- top tier -->
+          <rect x="76" y="108" width="148" height="64" rx="9" fill="#FBF0E2" />
+          <path
+            d="M76 116c0-5 4-8 9-8h130c5 0 9 3 9 8v6c-7 0-7 12-14 12s-7-8-14-8-7 14-15 14-7-12-14-12-7 8-14 8-7-12-15-12-7 10-14 10-7-8-15-8-7 10-14 10-7-12-9-12v-8z"
+            fill="#F4CFD2" />
+          <path d="M92 158c10-6 20 6 30 0s20 6 30 0 20 6 30 0 20 6 30 0" fill="none" stroke="#C77D8B" stroke-width="2"
+            stroke-linecap="round" opacity=".6" />
+
+          <!-- candles: each has a body, wick, flame and smoke -->
+          <g class="candles">
+            <g class="candle" style="--i:0" transform="translate(98 70)">
+              <rect width="10" height="40" rx="2.5" fill="#FFFDF8" stroke="#C77D8B" stroke-opacity=".5" />
+              <path d="M0 8l10-5M0 18l10-5M0 28l10-5M0 38l10-5" stroke="#F2C6CC" stroke-width="2.5" />
+              <line x1="5" y1="0" x2="5" y2="-6" stroke="#3D3A3E" stroke-width="1.6" />
+              <g class="flame">
+                <ellipse cx="5" cy="-14" rx="6" ry="11" fill="#F7C873" />
+                <ellipse cx="5" cy="-11" rx="3" ry="6" fill="#FFF6D6" />
+              </g>
+              <path class="smoke" d="M5 -6c-6-8 6-14 0-22s6-14 0-22" />
+            </g>
+            <g class="candle" style="--i:1" transform="translate(124 64)">
+              <rect width="10" height="46" rx="2.5" fill="#FFFDF8" stroke="#C77D8B" stroke-opacity=".5" />
+              <path d="M0 8l10-5M0 18l10-5M0 28l10-5M0 38l10-5" stroke="#E3B04B" stroke-opacity=".7"
+                stroke-width="2.5" />
+              <line x1="5" y1="0" x2="5" y2="-6" stroke="#3D3A3E" stroke-width="1.6" />
+              <g class="flame">
+                <ellipse cx="5" cy="-14" rx="6" ry="11" fill="#F7C873" />
+                <ellipse cx="5" cy="-11" rx="3" ry="6" fill="#FFF6D6" />
+              </g>
+              <path class="smoke" d="M5 -6c6-8-6-14 0-22s-6-14 0-22" />
+            </g>
+            <g class="candle" style="--i:2" transform="translate(145 58)">
+              <rect width="10" height="52" rx="2.5" fill="#FFFDF8" stroke="#C77D8B" stroke-opacity=".5" />
+              <path d="M0 8l10-5M0 18l10-5M0 28l10-5M0 38l10-5M0 48l10-5" stroke="#F2C6CC" stroke-width="2.5" />
+              <line x1="5" y1="0" x2="5" y2="-6" stroke="#3D3A3E" stroke-width="1.6" />
+              <g class="flame">
+                <ellipse cx="5" cy="-14" rx="6" ry="11" fill="#F7C873" />
+                <ellipse cx="5" cy="-11" rx="3" ry="6" fill="#FFF6D6" />
+              </g>
+              <path class="smoke" d="M5 -6c-6-8 6-14 0-22s6-14 0-22" />
+            </g>
+            <g class="candle" style="--i:3" transform="translate(166 64)">
+              <rect width="10" height="46" rx="2.5" fill="#FFFDF8" stroke="#C77D8B" stroke-opacity=".5" />
+              <path d="M0 8l10-5M0 18l10-5M0 28l10-5M0 38l10-5" stroke="#E3B04B" stroke-opacity=".7"
+                stroke-width="2.5" />
+              <line x1="5" y1="0" x2="5" y2="-6" stroke="#3D3A3E" stroke-width="1.6" />
+              <g class="flame">
+                <ellipse cx="5" cy="-14" rx="6" ry="11" fill="#F7C873" />
+                <ellipse cx="5" cy="-11" rx="3" ry="6" fill="#FFF6D6" />
+              </g>
+              <path class="smoke" d="M5 -6c6-8-6-14 0-22s-6-14 0-22" />
+            </g>
+            <g class="candle" style="--i:4" transform="translate(192 70)">
+              <rect width="10" height="40" rx="2.5" fill="#FFFDF8" stroke="#C77D8B" stroke-opacity=".5" />
+              <path d="M0 8l10-5M0 18l10-5M0 28l10-5M0 38l10-5" stroke="#F2C6CC" stroke-width="2.5" />
+              <line x1="5" y1="0" x2="5" y2="-6" stroke="#3D3A3E" stroke-width="1.6" />
+              <g class="flame">
+                <ellipse cx="5" cy="-14" rx="6" ry="11" fill="#F7C873" />
+                <ellipse cx="5" cy="-11" rx="3" ry="6" fill="#FFF6D6" />
+              </g>
+              <path class="smoke" d="M5 -6c-6-8 6-14 0-22s6-14 0-22" />
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <button id="blowBtn" class="btn btn-big" type="button">Blow out the candles 🕯️</button>
+      <p id="wishStatus" class="visually-hidden" role="status"></p>
+    </section>
+
+    <!-- ============ Scene 5: Celebration ============ -->
+    <section id="scene-finale" class="scene" hidden aria-labelledby="finale-title">
+      <div class="finale">
+        <figure class="polaroid portrait" id="portrait" hidden>
+          <img id="portraitImg" alt="Pencil sketch portrait of Likitha" decoding="async">
+        </figure>
+
+        <div class="greeting">
+          <span class="spark s1" aria-hidden="true">✦</span>
+          <span class="spark s2" aria-hidden="true">♡</span>
+          <span class="spark s3" aria-hidden="true">★</span>
+          <span class="spark s4" aria-hidden="true">✦</span>
+          <span class="spark s5" aria-hidden="true">♡</span>
+          <span class="spark s6" aria-hidden="true">✧</span>
+          <h2 id="finale-title" class="hand finale-title" tabindex="-1" data-focus>Happiest Birthday, Likitha! 🎂</h2>
+          <p class="finale-line">Keep smiling, keep shining, and keep being you. ♡</p>
+        </div>
+
+        <ul class="wishes">
+          <li lang="kn">ಜನ್ಮದಿನದ ಶುಭಾಶಯಗಳು</li>
+          <li lang="hi">जन्मदिन की शुभकामनाएँ</li>
+          <li lang="te">పుట్టినరోజు శుభాకాంక్షలు</li>
+          <li lang="ta">பிறந்தநாள் வாழ்த்துகள்</li>
+          <li lang="ml">ജന്മദിനാശംസകൾ</li>
+          <li lang="es">¡Feliz cumpleaños!</li>
+          <li lang="fr">Joyeux anniversaire !</li>
+          <li lang="ja">お誕生日おめでとう！</li>
+        </ul>
+
+        <div class="finale-actions">
+          <button id="replayBtn" class="btn" type="button">Replay the celebration 🎉</button>
+          <button id="wishAgainBtn" class="btn btn-ghost" type="button">Make a wish again 🕯️</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Full-screen effect layers (outside scenes so position:fixed always works) -->
+  <div id="dim" class="dim" aria-hidden="true"></div>
+  <div id="fx" class="fx" aria-hidden="true"></div>
+  <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+
+  <!-- Photo lightbox -->
+  <dialog id="lightbox" class="lightbox" aria-label="Photo viewer">
+    <div class="lb-stage" id="lbStage">
+      <img id="lbImg" alt="">
+    </div>
+    <p id="lbCaption" class="lb-caption hand"></p>
+    <p id="lbCount" class="lb-count"></p>
+    <button id="lbPrev" class="lb-btn lb-prev" type="button" aria-label="Previous photo">‹</button>
+    <button id="lbNext" class="lb-btn lb-next" type="button" aria-label="Next photo">›</button>
+    <button id="lbClose" class="lb-btn lb-close" type="button" aria-label="Close photo">✕</button>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
