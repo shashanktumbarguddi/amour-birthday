@@ -29,7 +29,7 @@ const CONFIG = {
   // Background music starts with her first tap ("Open your surprise ✨"),
   // because browsers don't allow sound before the visitor touches the page.
   sounds: {
-    background: "assets/music/background.mp3.mpeg",     // loops through the whole visit
+    background: "assets/music/background.mp3",     // loops through the whole visit
     candleBurning: "assets/sounds/candle-burning.mp3.mpeg", // loops while the candles are lit
     candleBlow: "assets/sounds/candle-blow.mp3.mpeg",    // plays once when she blows them out
     birthday: "assets/sounds/birthday.mp3.mpeg",       // plays on the final page
@@ -281,14 +281,18 @@ const CONFIG = {
       }
     });
 
-    // Start on the very first touch, click or key press anywhere
-    const first = () => {
+    // Start on her first real tap / click / key press anywhere.
+    // (pointerdown is deliberately not used: phones don't count it as a tap,
+    // so the browser would block the music.) If the music is still not playing
+    // on a later tap, try again.
+    const gestures = ["pointerup", "touchend", "click", "keydown"];
+    const onGesture = () => {
       start();
-      ["pointerdown", "keydown", "touchend"].forEach((ev) =>
-        window.removeEventListener(ev, first, true));
+      if (bg && usable(bg) && bg.paused && !bgHeld && !document.hidden) {
+        play(bg, bgTarget, { fadeMs: 800 });
+      }
     };
-    ["pointerdown", "keydown", "touchend"].forEach((ev) =>
-      window.addEventListener(ev, first, true));
+    gestures.forEach((ev) => window.addEventListener(ev, onGesture, true));
 
     return {
       start, candlesLit, candlesOut, leaveCandles, celebrate, leaveFinale,
